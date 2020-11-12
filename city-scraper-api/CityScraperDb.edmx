@@ -1,0 +1,870 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="CityScraperDbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="HomeTeamId" Type="int" Nullable="false" />
+          <Property Name="AwayTeamId" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="HomeTeamScore" Type="int" />
+          <Property Name="AwayTeamScore" Type="int" />
+        </EntityType>
+        <EntityType Name="League">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Abbreviation" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="Site" Type="varchar(max)" />
+        </EntityType>
+        <EntityType Name="MergeSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="NewPlayerCount" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="TeamId" Type="int" Nullable="false" />
+          <Property Name="Year" Type="int" Nullable="false" />
+          <Property Name="Position" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="PlayerGame">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PlayerId" Type="int" Nullable="false" />
+          <Property Name="GameId" Type="int" Nullable="false" />
+          <Property Name="Goals" Type="int" />
+          <Property Name="Assists" Type="int" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="LeagueId" Type="int" />
+        </EntityType>
+        <EntityType Name="ScraperSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="StartTime" Type="datetime" Nullable="false" />
+          <Property Name="EndTime" Type="datetime" Nullable="false" />
+          <Property Name="Data" Type="varchar(max)" />
+          <Property Name="PlayerCount" Type="int" />
+        </EntityType>
+        <EntityType Name="Sport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+          <Property Name="SportId" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CityScraperDb.dbo.AwayRecord' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AwayRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="AwayTeamId" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AwayTeamId" Type="int" Nullable="false" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Ties" Type="int" />
+          <Property Name="Losses" Type="int" />
+          <Property Name="Total" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CityScraperDb.dbo.HomeRecord' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="HomeRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="HomeTeamId" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HomeTeamId" Type="int" Nullable="false" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Ties" Type="int" />
+          <Property Name="Losses" Type="int" />
+          <Property Name="Total" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CityScraperDb.dbo.Matches' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Matches">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="home" />
+            <PropertyRef Name="away" />
+          </Key>
+          <Property Name="date" Type="date" Nullable="false" />
+          <Property Name="home" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HomeTeamScore" Type="int" />
+          <Property Name="AwayTeamScore" Type="int" />
+          <Property Name="away" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CityScraperDb.dbo.TotalRecord' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TotalRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="AwayTeamId" />
+          </Key>
+          <Property Name="name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="AwayTeamId" Type="int" Nullable="false" />
+          <Property Name="Wins" Type="int" />
+          <Property Name="Ties" Type="int" />
+          <Property Name="Loses" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'CityScraperDb.dbo.TotalStats' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TotalStats">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Player" />
+            <PropertyRef Name="School" />
+            <PropertyRef Name="SchoolId" />
+          </Key>
+          <Property Name="Rank" Type="bigint" />
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Player" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="School" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="SchoolId" Type="int" Nullable="false" />
+          <Property Name="total_goals" Type="int" />
+          <Property Name="total_assists" Type="int" />
+          <Property Name="total" Type="int" />
+          <Property Name="Goals_Per_Game" Type="float" />
+          <Property Name="Percentage_Games_With_Goal" Type="float" />
+        </EntityType>
+        <Association Name="FK_Game_Team_Away">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="AwayTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_Team_Home">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="HomeTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Team">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerGame_Game">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="PlayerGame" Type="Self.PlayerGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerGame">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerGame_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerGame" Type="Self.PlayerGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerGame">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_School_League">
+          <End Role="League" Type="Self.League" Multiplicity="0..1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="League">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="LeagueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Team_League">
+          <End Role="Sport" Type="Self.Sport" Multiplicity="1" />
+          <End Role="Team" Type="Self.Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="SportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Team_School">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Team" Type="Self.Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CityScraperDbModelStoreContainer">
+          <EntitySet Name="__RefactorLog" EntityType="Self.__RefactorLog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Game" EntityType="Self.Game" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="League" EntityType="Self.League" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MergeSummary" EntityType="Self.MergeSummary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Player" EntityType="Self.Player" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PlayerGame" EntityType="Self.PlayerGame" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="School" EntityType="Self.School" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ScraperSummary" EntityType="Self.ScraperSummary" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sport" EntityType="Self.Sport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Team" EntityType="Self.Team" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AwayRecord" EntityType="Self.AwayRecord" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AwayRecord].[name] AS [name], 
+    [AwayRecord].[AwayTeamId] AS [AwayTeamId], 
+    [AwayRecord].[Wins] AS [Wins], 
+    [AwayRecord].[Ties] AS [Ties], 
+    [AwayRecord].[Losses] AS [Losses], 
+    [AwayRecord].[Total] AS [Total]
+    FROM [dbo].[AwayRecord] AS [AwayRecord]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="HomeRecord" EntityType="Self.HomeRecord" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [HomeRecord].[name] AS [name], 
+    [HomeRecord].[HomeTeamId] AS [HomeTeamId], 
+    [HomeRecord].[Wins] AS [Wins], 
+    [HomeRecord].[Ties] AS [Ties], 
+    [HomeRecord].[Losses] AS [Losses], 
+    [HomeRecord].[Total] AS [Total]
+    FROM [dbo].[HomeRecord] AS [HomeRecord]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="Matches" EntityType="Self.Matches" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Matches].[date] AS [date], 
+    [Matches].[home] AS [home], 
+    [Matches].[HomeTeamScore] AS [HomeTeamScore], 
+    [Matches].[AwayTeamScore] AS [AwayTeamScore], 
+    [Matches].[away] AS [away]
+    FROM [dbo].[Matches] AS [Matches]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TotalRecord" EntityType="Self.TotalRecord" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TotalRecord].[name] AS [name], 
+    [TotalRecord].[AwayTeamId] AS [AwayTeamId], 
+    [TotalRecord].[Wins] AS [Wins], 
+    [TotalRecord].[Ties] AS [Ties], 
+    [TotalRecord].[Loses] AS [Loses]
+    FROM [dbo].[TotalRecord] AS [TotalRecord]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TotalStats" EntityType="Self.TotalStats" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TotalStats].[Rank] AS [Rank], 
+    [TotalStats].[Id] AS [Id], 
+    [TotalStats].[Player] AS [Player], 
+    [TotalStats].[School] AS [School], 
+    [TotalStats].[SchoolId] AS [SchoolId], 
+    [TotalStats].[total_goals] AS [total_goals], 
+    [TotalStats].[total_assists] AS [total_assists], 
+    [TotalStats].[total] AS [total], 
+    [TotalStats].[Goals_Per_Game] AS [Goals_Per_Game], 
+    [TotalStats].[Percentage_Games_With_Goal] AS [Percentage_Games_With_Goal]
+    FROM [dbo].[TotalStats] AS [TotalStats]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Game_Team_Away" Association="Self.FK_Game_Team_Away">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_Team_Home" Association="Self.FK_Game_Team_Home">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Game" EntitySet="Game" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Team" Association="Self.FK_Player_Team">
+            <End Role="Team" EntitySet="Team" />
+            <End Role="Player" EntitySet="Player" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerGame_Game" Association="Self.FK_PlayerGame_Game">
+            <End Role="Game" EntitySet="Game" />
+            <End Role="PlayerGame" EntitySet="PlayerGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerGame_Player" Association="Self.FK_PlayerGame_Player">
+            <End Role="Player" EntitySet="Player" />
+            <End Role="PlayerGame" EntitySet="PlayerGame" />
+          </AssociationSet>
+          <AssociationSet Name="FK_School_League" Association="Self.FK_School_League">
+            <End Role="League" EntitySet="League" />
+            <End Role="School" EntitySet="School" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Team_League" Association="Self.FK_Team_League">
+            <End Role="Sport" EntitySet="Sport" />
+            <End Role="Team" EntitySet="Team" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Team_School" Association="Self.FK_Team_School">
+            <End Role="School" EntitySet="School" />
+            <End Role="Team" EntitySet="Team" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CityScraperDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__RefactorLog">
+          <Key>
+            <PropertyRef Name="OperationKey" />
+          </Key>
+          <Property Name="OperationKey" Type="Guid" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="HomeTeamId" Type="Int32" Nullable="false" />
+          <Property Name="AwayTeamId" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HomeTeamScore" Type="Int32" />
+          <Property Name="AwayTeamScore" Type="Int32" />
+          <NavigationProperty Name="Team" Relationship="Self.FK_Game_Team_Away" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="Team1" Relationship="Self.FK_Game_Team_Home" FromRole="Game" ToRole="Team" />
+          <NavigationProperty Name="PlayerGames" Relationship="Self.FK_PlayerGame_Game" FromRole="Game" ToRole="PlayerGame" />
+        </EntityType>
+        <EntityType Name="League">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Abbreviation" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Site" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Schools" Relationship="Self.FK_School_League" FromRole="League" ToRole="School" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TeamId" Type="Int32" Nullable="false" />
+          <Property Name="Year" Type="Int32" Nullable="false" />
+          <Property Name="Position" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Team" Relationship="Self.FK_Player_Team" FromRole="Player" ToRole="Team" />
+          <NavigationProperty Name="PlayerGames" Relationship="Self.FK_PlayerGame_Player" FromRole="Player" ToRole="PlayerGame" />
+        </EntityType>
+        <EntityType Name="PlayerGame">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" Nullable="false" />
+          <Property Name="GameId" Type="Int32" Nullable="false" />
+          <Property Name="Goals" Type="Int32" />
+          <Property Name="Assists" Type="Int32" />
+          <NavigationProperty Name="Game" Relationship="Self.FK_PlayerGame_Game" FromRole="PlayerGame" ToRole="Game" />
+          <NavigationProperty Name="Player" Relationship="Self.FK_PlayerGame_Player" FromRole="PlayerGame" ToRole="Player" />
+        </EntityType>
+        <EntityType Name="School">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="LeagueId" Type="Int32" />
+          <NavigationProperty Name="League" Relationship="Self.FK_School_League" FromRole="School" ToRole="League" />
+          <NavigationProperty Name="Teams" Relationship="Self.FK_Team_School" FromRole="School" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Sport">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Teams" Relationship="Self.FK_Team_League" FromRole="Sport" ToRole="Team" />
+        </EntityType>
+        <EntityType Name="Team">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <Property Name="SportId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Games" Relationship="Self.FK_Game_Team_Away" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="Games1" Relationship="Self.FK_Game_Team_Home" FromRole="Team" ToRole="Game" />
+          <NavigationProperty Name="Players" Relationship="Self.FK_Player_Team" FromRole="Team" ToRole="Player" />
+          <NavigationProperty Name="School" Relationship="Self.FK_Team_School" FromRole="Team" ToRole="School" />
+          <NavigationProperty Name="Sport" Relationship="Self.FK_Team_League" FromRole="Team" ToRole="Sport" />
+        </EntityType>
+        <Association Name="FK_Game_Team_Away">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="AwayTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Game_Team_Home">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Game" Type="Self.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Game">
+              <PropertyRef Name="HomeTeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerGame_Game">
+          <End Role="Game" Type="Self.Game" Multiplicity="1" />
+          <End Role="PlayerGame" Type="Self.PlayerGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Game">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerGame">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_School_League">
+          <End Role="League" Type="Self.League" Multiplicity="0..1" />
+          <End Role="School" Type="Self.School" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="League">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="School">
+              <PropertyRef Name="LeagueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Player_Team">
+          <End Role="Team" Type="Self.Team" Multiplicity="1" />
+          <End Role="Player" Type="Self.Player" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Team">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Player">
+              <PropertyRef Name="TeamId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PlayerGame_Player">
+          <End Role="Player" Type="Self.Player" Multiplicity="1" />
+          <End Role="PlayerGame" Type="Self.PlayerGame" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Player">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="PlayerGame">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Team_School">
+          <End Role="School" Type="Self.School" Multiplicity="1" />
+          <End Role="Team" Type="Self.Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="School">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="SchoolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Team_League">
+          <End Role="Sport" Type="Self.Sport" Multiplicity="1" />
+          <End Role="Team" Type="Self.Team" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Sport">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Team">
+              <PropertyRef Name="SportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CityScraperDb" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__RefactorLog" EntityType="Self.C__RefactorLog" />
+          <EntitySet Name="Games" EntityType="Self.Game" />
+          <EntitySet Name="Leagues" EntityType="Self.League" />
+          <EntitySet Name="Players" EntityType="Self.Player" />
+          <EntitySet Name="PlayerGames" EntityType="Self.PlayerGame" />
+          <EntitySet Name="Schools" EntityType="Self.School" />
+          <EntitySet Name="Sports" EntityType="Self.Sport" />
+          <EntitySet Name="Teams" EntityType="Self.Team" />
+          <AssociationSet Name="FK_Game_Team_Away" Association="Self.FK_Game_Team_Away">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Game_Team_Home" Association="Self.FK_Game_Team_Home">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Game" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerGame_Game" Association="Self.FK_PlayerGame_Game">
+            <End Role="Game" EntitySet="Games" />
+            <End Role="PlayerGame" EntitySet="PlayerGames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_School_League" Association="Self.FK_School_League">
+            <End Role="League" EntitySet="Leagues" />
+            <End Role="School" EntitySet="Schools" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Player_Team" Association="Self.FK_Player_Team">
+            <End Role="Team" EntitySet="Teams" />
+            <End Role="Player" EntitySet="Players" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PlayerGame_Player" Association="Self.FK_PlayerGame_Player">
+            <End Role="Player" EntitySet="Players" />
+            <End Role="PlayerGame" EntitySet="PlayerGames" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Team_School" Association="Self.FK_Team_School">
+            <End Role="School" EntitySet="Schools" />
+            <End Role="Team" EntitySet="Teams" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Team_League" Association="Self.FK_Team_League">
+            <End Role="Sport" EntitySet="Sports" />
+            <End Role="Team" EntitySet="Teams" />
+          </AssociationSet>
+          <EntitySet Name="Matches" EntityType="CityScraperDbModel.Match" />
+          <EntitySet Name="MergeSummaries" EntityType="CityScraperDbModel.MergeSummary" />
+          <EntitySet Name="ScraperSummaries" EntityType="CityScraperDbModel.ScraperSummary" />
+          <EntitySet Name="AwayRecords" EntityType="CityScraperDbModel.AwayRecord" />
+          <EntitySet Name="HomeRecords" EntityType="CityScraperDbModel.HomeRecord" />
+          <EntitySet Name="TotalRecords" EntityType="CityScraperDbModel.TotalRecord" />
+          <EntitySet Name="TotalStats" EntityType="CityScraperDbModel.TotalStat" />
+        </EntityContainer>
+        <EntityType Name="Match">
+          <Key>
+            <PropertyRef Name="date" />
+            <PropertyRef Name="home" />
+            <PropertyRef Name="away" />
+          </Key>
+          <Property Name="date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="home" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HomeTeamScore" Type="Int32" />
+          <Property Name="AwayTeamScore" Type="Int32" />
+          <Property Name="away" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="MergeSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="NewPlayerCount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ScraperSummary">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EndTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Data" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="PlayerCount" Type="Int32" />
+        </EntityType>
+        <EntityType Name="AwayRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="AwayTeamId" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AwayTeamId" Type="Int32" Nullable="false" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Ties" Type="Int32" />
+          <Property Name="Losses" Type="Int32" />
+          <Property Name="Total" Type="Int32" />
+        </EntityType>
+        <EntityType Name="HomeRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="HomeTeamId" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="HomeTeamId" Type="Int32" Nullable="false" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Ties" Type="Int32" />
+          <Property Name="Losses" Type="Int32" />
+          <Property Name="Total" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TotalRecord">
+          <Key>
+            <PropertyRef Name="name" />
+            <PropertyRef Name="AwayTeamId" />
+          </Key>
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="AwayTeamId" Type="Int32" Nullable="false" />
+          <Property Name="Wins" Type="Int32" />
+          <Property Name="Ties" Type="Int32" />
+          <Property Name="Loses" Type="Int32" />
+        </EntityType>
+        <EntityType Name="TotalStat">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Player" />
+            <PropertyRef Name="School" />
+            <PropertyRef Name="SchoolId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Player" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="School" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="total_goals" Type="Int32" />
+          <Property Name="total_assists" Type="Int32" />
+          <Property Name="total" Type="Int32" />
+          <Property Name="SchoolId" Type="Int32" Nullable="false" />
+          <Property Name="Goals_Per_Game" Type="Double" />
+          <Property Name="Percentage_Games_With_Goal" Type="Double" />
+          <Property Name="Rank" Type="Int64" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CityScraperDbModelStoreContainer" CdmEntityContainer="CityScraperDb">
+          <EntitySetMapping Name="C__RefactorLog">
+            <EntityTypeMapping TypeName="CityScraperDbModel.C__RefactorLog">
+              <MappingFragment StoreEntitySet="__RefactorLog">
+                <ScalarProperty Name="OperationKey" ColumnName="OperationKey" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="CityScraperDbModel.Game">
+              <MappingFragment StoreEntitySet="Game">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="HomeTeamId" ColumnName="HomeTeamId" />
+                <ScalarProperty Name="AwayTeamId" ColumnName="AwayTeamId" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="HomeTeamScore" ColumnName="HomeTeamScore" />
+                <ScalarProperty Name="AwayTeamScore" ColumnName="AwayTeamScore" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Leagues">
+            <EntityTypeMapping TypeName="CityScraperDbModel.League">
+              <MappingFragment StoreEntitySet="League">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Abbreviation" ColumnName="Abbreviation" />
+                <ScalarProperty Name="Site" ColumnName="Site" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="CityScraperDbModel.Player">
+              <MappingFragment StoreEntitySet="Player">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TeamId" ColumnName="TeamId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PlayerGames">
+            <EntityTypeMapping TypeName="CityScraperDbModel.PlayerGame">
+              <MappingFragment StoreEntitySet="PlayerGame">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="PlayerId" ColumnName="PlayerId" />
+                <ScalarProperty Name="GameId" ColumnName="GameId" />
+                <ScalarProperty Name="Goals" ColumnName="Goals" />
+                <ScalarProperty Name="Assists" ColumnName="Assists" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Schools">
+            <EntityTypeMapping TypeName="CityScraperDbModel.School">
+              <MappingFragment StoreEntitySet="School">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LeagueId" ColumnName="LeagueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sports">
+            <EntityTypeMapping TypeName="CityScraperDbModel.Sport">
+              <MappingFragment StoreEntitySet="Sport">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Teams">
+            <EntityTypeMapping TypeName="CityScraperDbModel.Team">
+              <MappingFragment StoreEntitySet="Team">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="SportId" ColumnName="SportId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Matches">
+            <EntityTypeMapping TypeName="CityScraperDbModel.Match">
+              <MappingFragment StoreEntitySet="Matches">
+                <ScalarProperty Name="away" ColumnName="away" />
+                <ScalarProperty Name="AwayTeamScore" ColumnName="AwayTeamScore" />
+                <ScalarProperty Name="HomeTeamScore" ColumnName="HomeTeamScore" />
+                <ScalarProperty Name="home" ColumnName="home" />
+                <ScalarProperty Name="date" ColumnName="date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MergeSummaries">
+            <EntityTypeMapping TypeName="CityScraperDbModel.MergeSummary">
+              <MappingFragment StoreEntitySet="MergeSummary">
+                <ScalarProperty Name="NewPlayerCount" ColumnName="NewPlayerCount" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ScraperSummaries">
+            <EntityTypeMapping TypeName="CityScraperDbModel.ScraperSummary">
+              <MappingFragment StoreEntitySet="ScraperSummary">
+                <ScalarProperty Name="PlayerCount" ColumnName="PlayerCount" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AwayRecords">
+            <EntityTypeMapping TypeName="CityScraperDbModel.AwayRecord">
+              <MappingFragment StoreEntitySet="AwayRecord">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Losses" ColumnName="Losses" />
+                <ScalarProperty Name="Ties" ColumnName="Ties" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="AwayTeamId" ColumnName="AwayTeamId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="HomeRecords">
+            <EntityTypeMapping TypeName="CityScraperDbModel.HomeRecord">
+              <MappingFragment StoreEntitySet="HomeRecord">
+                <ScalarProperty Name="Total" ColumnName="Total" />
+                <ScalarProperty Name="Losses" ColumnName="Losses" />
+                <ScalarProperty Name="Ties" ColumnName="Ties" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="HomeTeamId" ColumnName="HomeTeamId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TotalRecords">
+            <EntityTypeMapping TypeName="CityScraperDbModel.TotalRecord">
+              <MappingFragment StoreEntitySet="TotalRecord">
+                <ScalarProperty Name="Loses" ColumnName="Loses" />
+                <ScalarProperty Name="Ties" ColumnName="Ties" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="AwayTeamId" ColumnName="AwayTeamId" />
+                <ScalarProperty Name="name" ColumnName="name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TotalStats">
+            <EntityTypeMapping TypeName="CityScraperDbModel.TotalStat">
+              <MappingFragment StoreEntitySet="TotalStats">
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
+                <ScalarProperty Name="Percentage_Games_With_Goal" ColumnName="Percentage_Games_With_Goal" />
+                <ScalarProperty Name="Goals_Per_Game" ColumnName="Goals_Per_Game" />
+                <ScalarProperty Name="SchoolId" ColumnName="SchoolId" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="total_assists" ColumnName="total_assists" />
+                <ScalarProperty Name="total_goals" ColumnName="total_goals" />
+                <ScalarProperty Name="School" ColumnName="School" />
+                <ScalarProperty Name="Player" ColumnName="Player" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9222b1b260f84a45a86c2515a0a8bc21" Name="Diagram1">
+        <EntityTypeShape EntityType="CityScraperDbModel.C__RefactorLog" Width="1.5" PointX="0.75" PointY="7.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.Game" Width="1.5" PointX="7.5" PointY="1.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.League" Width="1.5" PointX="0.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.Player" Width="1.5" PointX="7.5" PointY="5.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.PlayerGame" Width="1.5" PointX="9.75" PointY="3.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.School" Width="1.5" PointX="3" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.Sport" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CityScraperDbModel.Team" Width="1.5" PointX="5.25" PointY="3.25" IsExpanded="true" />
+        <AssociationConnector Association="CityScraperDbModel.FK_Game_Team_Away" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_Game_Team_Home" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_PlayerGame_Game" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_School_League" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_Player_Team" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_PlayerGame_Player" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_Team_School" ManuallyRouted="false" />
+        <AssociationConnector Association="CityScraperDbModel.FK_Team_League" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="CityScraperDbModel.Match" Width="1.5" PointX="3.375" PointY="6.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.MergeSummary" Width="1.5" PointX="5.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.ScraperSummary" Width="1.5" PointX="7.375" PointY="8.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.AwayRecord" Width="1.5" PointX="0.75" PointY="9.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.HomeRecord" Width="1.5" PointX="2.75" PointY="9.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.TotalRecord" Width="1.5" PointX="9.75" PointY="8.75" />
+        <EntityTypeShape EntityType="CityScraperDbModel.TotalStat" Width="1.5" PointX="4.75" PointY="11.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
